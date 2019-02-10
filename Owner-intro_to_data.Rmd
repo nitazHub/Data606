@@ -471,7 +471,8 @@ plot(cdc$weight, cdc$wtdesire, xlab="Current weight", ylab="Desired weight")
     object called `wdiff`.
 ```{r wdiff-wtdes-wt, eval=TRUE}
 wdiff <- cdc$wtdesire - cdc$weight
-wdiff
+head(wdiff)
+tail(wdiff)
 ```
     
 -   What type of data is `wdiff`? If an observation `wdiff` is 0, what does 
@@ -504,23 +505,27 @@ boxplot(wdiff ~cdc$gender)
 library(mosaic)
 mean(cdc$weight)
 sd(cdc$weight)
-ldev <- zscore(cdc$weight) <= 1
-table(ldev)
-barplot(table(ldev))
-table(ldev)/20000
-ldev2 <- cdc$weight - (mean(cdc$weight)+sd(cdc$weight)) < 0
-table(ldev2)
+lzsc <- zscore(cdc$weight) >= -1 & zscore(cdc$weight) <= 1
+table(lzsc)
+barplot(table(lzsc))
+table(lzsc)/20000
+myz <- (cdc$weight - mean(cdc$weight)) / sd(cdc$weight)
+myzl <- myz >= -1 & myz <= 1
+table(myzl)
+barplot(table(myzl))
+table(myzl)/20000
 ```
     *The above steps:
     1.calculated mean & std eviation of the weight variable
-    2.created a logical dataframe (ldev) to indicate TRUE for every row that is within 1 std deviation of the mean, using the zscore function
-    3.used the table function to display the contents of the ldev dataframe
-    4.used the barplot function to graphically display the contents of the ldev dataframe
-    5.divided the ldev dataframe by the number of rows to get the proportions of the number of respondents within 1 std dev of the mean (85%)
+    2.created a logical vector (lzsc) to indicate TRUE for every row that is within 1 std deviation of the mean, using the zscore function
+    3.used the table function to display the contents of the lzsc vector
+    4.used the barplot function to graphically display the contents of the lzsc vector
+    5.divided the lzsc vector by the number of rows to get the proportions of the number of respondents within 1 std dev of the mean (71%)
     *check my work* 
     ***
-    6.created a second logical dataframe (ldev2) to indicate TRUE for every row that is whose weight is less than 0 when subtractiing the sum of the mean and the std dev.  This should equal the number of people within 1 std dev of the mean using zscore
-    7.divided the ldev2 dataframe by the number of rows to get the proportions of the number of respondents with a value of TRUE.(85%)
+    6.created a numeric vector (myz) to indicate the zscore for every element using the zscore formula.
+    7,created a second logical vector (myzl) to indicate TRUE for every row that is whose weight is between -1 and 1 when subtractiing the sum of the mean and the std dev.  This should equal the number of people within 1 std dev of the mean using zscore
+    7.divided the myzl by the number of rows to get the proportions of the number of respondents with a value of TRUE.(71%)
 
 <div id="license">
 This is a product of OpenIntro that is released under a 
